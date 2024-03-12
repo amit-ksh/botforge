@@ -20,8 +20,8 @@ export default function Home() {
 
         <div className="my-6">
           <h2 className={title()}>
-            Craft content <span className="text-orange-600">bots</span> in
-            seconds!
+            Craft content{" "}
+            <span className="text-orange-600">bots in seconds!</span>
           </h2>
           <p className={subtitle({ class: "mt-4" })}>
             Transform your content into dynamic bots in mere seconds for an
