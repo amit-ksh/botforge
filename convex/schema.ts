@@ -5,7 +5,7 @@ export default defineSchema({
   bot: defineTable({
     name: v.string(),
     description: v.string(),
-    content: v.string(),
+    content: v.id("_storage"),
     status: v.union(
       v.literal("PROCESSING"),
       v.literal("FAILED"),

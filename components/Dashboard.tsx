@@ -15,14 +15,25 @@ import {
 } from "@nextui-org/react";
 import { title } from "./primitives";
 import UploadButton from "./UploadButton";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@clerk/nextjs";
+import { Id } from "@/convex/_generated/dataModel";
 
 function Dashboard() {
   const { userId } = useAuth();
 
   const bots = useQuery(api.bots.getUserBots, { userId: userId! });
+  const deleteBot = useMutation(api.bots.deleteBot);
+
+  async function handleBotDelete(id: Id<"bot">) {
+    const resp = await deleteBot({ userId: userId!, id });
+    if (resp.code == 200) {
+      // success toast
+    } else {
+      // failure toast
+    }
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-6 md:px-10">
@@ -39,17 +50,14 @@ function Dashboard() {
                 new Date(b._creationTime).getTime() -
                 new Date(a._creationTime).getTime()
             )
-            .map((bot, idx) => (
+            .map((bot) => (
               <li key={bot._id} className="col-span-1">
-                <Card
-                  as={Link}
-                  href={`/bot/${bot._id}`}
-                  className="sm:max-w-[360px]"
-                  shadow="md"
-                  isHoverable
-                >
+                <Card className="sm:max-w-[360px]" shadow="md">
                   <CardHeader className=" justify-between">
-                    <div className="flex gap-3">
+                    <Link
+                      href={`/bot/${bot._id}`}
+                      className="w-full flex gap-3"
+                    >
                       <Image
                         alt="nextui logo"
                         height={40}
@@ -58,12 +66,12 @@ function Dashboard() {
                         width={40}
                       />
                       <div className="flex flex-col">
-                        <p className="text-lg">{bot.name}</p>
+                        <p className="text-lg text-white">{bot.name}</p>
                         <p className="text-small text-default-500">
                           {bot.description}
                         </p>
                       </div>
-                    </div>
+                    </Link>
 
                     <div className="self-start ">
                       <LinkIcon className="text-orange-500 w-5 h-5" />
@@ -85,6 +93,7 @@ function Dashboard() {
                         color="danger"
                         variant="ghost"
                         className="w-4 h-7"
+                        onClick={() => handleBotDelete(bot._id)}
                       >
                         <TrashIcon className="w-4 h-4" />
                       </Button>

@@ -4,7 +4,6 @@ import { v } from "convex/values";
 // Return the last 100 tasks in a given task list.
 export const getUserBots = query({
   args: { userId: v.string() },
-
   handler: async (ctx, args) => {
     const bots = await ctx.db
       .query("bot")
@@ -19,7 +18,7 @@ export const createBot = mutation({
   args: {
     name: v.string(),
     description: v.string(),
-    file: v.string(),
+    file: v.id("_storage"),
     userId: v.string(),
   },
   handler: async (ctx, args) => {
@@ -32,6 +31,29 @@ export const createBot = mutation({
       messages: [],
     });
     return newBotId;
+  },
+});
+
+export const deleteBot = mutation({
+  args: {
+    id: v.id("bot"),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const bot = await ctx.db.get(args.id);
+
+    if (!bot || bot.user === args.userId) {
+      return {
+        code: 400,
+      };
+    }
+
+    await ctx.db.delete(args.id);
+    await ctx.storage.delete(bot.content);
+
+    return {
+      code: 200,
+    };
   },
 });
 
