@@ -12,6 +12,7 @@ import {
   Link,
   Image,
   Button,
+  Chip,
 } from "@nextui-org/react";
 import { title } from "./primitives";
 import UploadButton from "./UploadButton";
@@ -19,6 +20,12 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@clerk/nextjs";
 import { Id } from "@/convex/_generated/dataModel";
+
+enum BotStatusColorMap {
+  PROCESSING = "primary",
+  READY = "success",
+  FAILED = "danger",
+}
 
 function Dashboard() {
   const { userId } = useAuth();
@@ -65,17 +72,29 @@ function Dashboard() {
                         src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
                         width={40}
                       />
-                      <div className="flex flex-col">
-                        <p className="text-lg text-white">{bot.name}</p>
-                        <p className="text-small text-default-500">
-                          {bot.description}
-                        </p>
+
+                      <div className=" flex justify-between w-full">
+                        <div className="flex flex-col">
+                          <p className="text-lg text-orange-600 flex gap-1">
+                            <span>{bot.name}</span>
+                            <span>
+                              <LinkIcon className="w-3 h-3 text-orange-600" />
+                            </span>
+                          </p>
+                          <p className="text-small text-default-500">
+                            {bot.description}
+                          </p>
+                        </div>
+
+                        <Chip
+                          color={BotStatusColorMap[bot.status]}
+                          size="sm"
+                          className="p-2 self-start"
+                        >
+                          {bot.status}
+                        </Chip>
                       </div>
                     </Link>
-
-                    <div className="self-start ">
-                      <LinkIcon className="text-orange-500 w-5 h-5" />
-                    </div>
                   </CardHeader>
                   <Divider />
                   <CardBody>

@@ -19,6 +19,5 @@ export default defineSchema({
     messageBy: v.union(v.literal("USER"), v.literal("BOT"), v.literal("OWNER")),
 
     bot: v.optional(v.id("bot")),
-    user: v.optional(v.string()),
   }),
 });

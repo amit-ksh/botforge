@@ -1,7 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-// Return the last 100 tasks in a given task list.
 export const getUserBots = query({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
@@ -11,6 +10,29 @@ export const getUserBots = query({
       .order("desc")
       .take(10);
     return bots;
+  },
+});
+
+export const getBotById = query({
+  args: { id: v.id("bot"), userId: v.string() },
+  handler: async (ctx, args) => {
+    const bot = await ctx.db
+      .query("bot")
+      .filter(
+        (q) =>
+          q.eq(q.field("_id"), args.id) && q.eq(q.field("user"), args.userId)
+      )
+      .order("desc")
+      .take(1);
+    return bot;
+  },
+});
+
+export const getBotContentFile = query({
+  args: { fileId: v.optional(v.id("_storage")) },
+  handler: async (ctx, args) => {
+    if (!args.fileId) return null;
+    return await ctx.storage.getUrl(args?.fileId);
   },
 });
 
