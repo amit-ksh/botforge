@@ -16,9 +16,9 @@ interface ChatWrapperProps {
 function ChatWrapper({ botId, botStatus }: ChatWrapperProps) {
   if (botStatus === "PROCESSING") {
     return (
-      <div className="relative h-full divide-y divide-zinc-700 flex-col justify-between gap-2">
+      <div className="relative min-h-[50vh] h-full divide-y divide-zinc-300 dark:divide-zinc-800 flex-col justify-between gap-2">
         <div className="h-full flex-1 flex flex-col justify-between items-center">
-          <div className="flex flex-col items-center gap-2  my-auto">
+          <div className="mt-8 flex flex-col items-center gap-2 my-auto">
             <Loader2 className="h-8 w-8 text-orange-600 animate-spin" />
             <h3 className="font-semibold text-xl ">Processing PDF...</h3>
             <p className="text-sm">This won&apos;t take long.</p>
@@ -32,7 +32,7 @@ function ChatWrapper({ botId, botStatus }: ChatWrapperProps) {
 
   if (botStatus === "FAILED") {
     return (
-      <div className="relative min-h-full divide-y divide-zinc-700 flex-col justify-between gap-2">
+      <div className="relative min-h-full divide-y divide-zinc-300 dark:divide-zinc-800 flex-col justify-between gap-2">
         <div className="flex-1 flex flex-col justify-between items-center mb-28">
           <div className="flex flex-col items-center gap-2">
             <XCircle className="h-8 w-8 text-red-500" />
@@ -55,7 +55,7 @@ function ChatWrapper({ botId, botStatus }: ChatWrapperProps) {
   // BOT 'READY' STATE
   return (
     <ChatContextProvider botId={botId}>
-      <div className="relative min-h-full divide-y divide-zinc-700 flex-col justify-between gap-2">
+      <div className="relative min-h-full divide-y divide-zinc-300 dark:divide-zinc-800 flex-col justify-between gap-2">
         <div className="flex-1 justify-between flex flex-col mb-28">
           <Messages botId={botId} />
         </div>

@@ -36,7 +36,7 @@ function Page({ params }: PageProps) {
   if (!bot?._id) notFound();
 
   return (
-    <div className="flex-1 justify-between flex flex-col h-[calc(100vh - 3.5rem)] overflow-y-hidden">
+    <div className="flex-1 justify-between flex flex-col h-[calc(100vh - 3.5rem)] lg:overflow-y-hidden">
       <div className="mx-auto w-full h-[91vh] max-w-7xl grow lg:flex xl:px-2">
         {/* left side */}
         <div className="flex-1 xl:flex">
@@ -46,7 +46,7 @@ function Page({ params }: PageProps) {
         </div>
 
         {/* right side */}
-        <div className="shrink-0 flex-[0.75] border-t border-zinc-700 lg:w-96 lg:border-l lg:border-t-0">
+        <div className="shrink-0 min-h-[50vh] flex-[0.75] border-t border-zinc-300 dark:border-zinc-800 lg:w-96 lg:border-l lg:border-t-0">
           <ChatWrapper botStatus={bot.status} botId={bot._id} />
         </div>
       </div>
