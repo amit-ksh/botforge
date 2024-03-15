@@ -18,19 +18,17 @@ import clsx from "clsx";
 import { ThemeSwitch } from "@/components/theme-switch";
 
 import { AppLogo } from "@/components/icons";
-import {
-  SignInButton,
-  SignOutButton,
-  SignUpButton,
-  useAuth,
-} from "@clerk/clerk-react";
+import { SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs";
+import { dark, neobrutalism, shadesOfPurple } from "@clerk/themes";
+import { useTheme } from "next-themes";
 import { title } from "./primitives";
 
 export const Navbar = () => {
   const { isSignedIn } = useAuth();
+  const { theme } = useTheme();
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NextUINavbar maxWidth="xl" position="sticky" isBlurred isBordered>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
@@ -64,7 +62,9 @@ export const Navbar = () => {
       >
         {isSignedIn ? (
           <NavbarItem className="hidden sm:flex">
-            <SignOutButton />
+            <UserButton
+              appearance={{ baseTheme: theme === "dark" ? dark : neobrutalism }}
+            />
           </NavbarItem>
         ) : (
           <>
@@ -106,7 +106,11 @@ export const Navbar = () => {
         <div className="mt-auto flex justify-between py-4 ">
           {isSignedIn ? (
             <NavbarItem className="flex px-4 py-2 w-full justify-center">
-              <SignOutButton />
+              <UserButton
+                appearance={{
+                  baseTheme: theme === "dark" ? dark : neobrutalism,
+                }}
+              />
             </NavbarItem>
           ) : (
             <>
