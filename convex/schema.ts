@@ -7,6 +7,8 @@ export const BotStatusType = v.union(
   v.literal("READY")
 );
 
+export const AuthorTypes = v.union(v.literal("user"), v.literal("assistant"));
+
 export default defineSchema({
   bot: defineTable({
     name: v.string(),
@@ -14,11 +16,11 @@ export default defineSchema({
     content: v.id("_storage"),
     status: BotStatusType,
     user: v.string(),
-    messages: v.array(v.id("messages")),
+    messages: v.array(v.id("message")),
   }),
   message: defineTable({
     text: v.string(),
-    author: v.union(v.literal("user"), v.literal("assistant")),
+    author: AuthorTypes,
 
     bot: v.optional(v.id("bot")),
   }),

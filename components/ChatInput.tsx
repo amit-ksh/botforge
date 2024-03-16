@@ -24,11 +24,11 @@ function ChatInput({ isDisabled }: ChatInputProps) {
                 rows={1}
                 maxRows={4}
                 placeholder="Enter your question..."
-                // className="resize-none pr-12 text-base py-3 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+                className="resize-none"
                 autoFocus
-                // disabled={isDisabled}
-                // onChange={handleInputChange}
-                // value={message}
+                disabled={isDisabled}
+                onChange={(e) => handleInputChange(e.target.value)}
+                value={message}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
@@ -46,7 +46,8 @@ function ChatInput({ isDisabled }: ChatInputProps) {
                 disabled={isLoading || isDisabled}
                 aria-label="send message"
                 isDisabled={!textareaRef?.current?.value}
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   addMessage();
                   textareaRef.current?.focus();
                 }}

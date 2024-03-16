@@ -11,10 +11,11 @@ type ChatParams = {
 };
 
 export const chat = internalAction({
-  handler: async (
-    ctx,
-    { messages, messageId, message, context }: ChatParams
-  ) => {
+  handler: async (ctx, { data }: { data: string }) => {
+    const { message, messageId, messages, context } = JSON.parse(
+      data
+    ) as ChatParams;
+
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY!,
     });

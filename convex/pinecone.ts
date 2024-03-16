@@ -1,12 +1,11 @@
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { PineconeClient } from "@pinecone-database/pinecone";
 
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
 import { api, internal } from "./_generated/api";
-import { action, internalAction } from "./_generated/server";
+import { action, internalAction, query } from "./_generated/server";
 
 const getPineconeIndex = async () => {
   const client = new PineconeClient();
@@ -24,25 +23,45 @@ interface CreateVectorStoreParams {
   message: string;
 }
 
-export const createVectorStore = async ({
-  botId,
-  message,
-}: CreateVectorStoreParams) => {
-  const pineconeIndex = await getPineconeIndex();
+export const searchAndChat = action({
+  args: { botId: v.id("bot"), message: v.string() },
+  handler: async (ctx, { botId, message }: CreateVectorStoreParams) => {
+    const pineconeIndex = await getPineconeIndex();
 
-  const embedding = new OpenAIEmbeddings({
-    openAIApiKey: process.env.OPENAI_API_KEY,
-  });
+    const embedding = new OpenAIEmbeddings({
+      openAIApiKey: process.env.OPENAI_API_KEY,
+    });
 
-  const vectorStore = await PineconeStore.fromExistingIndex(embedding, {
-    pineconeIndex,
-    namespace: botId,
-  });
+    const vectorStore = await PineconeStore.fromExistingIndex(embedding, {
+      pineconeIndex,
+      namespace: botId,
+    });
 
-  const results = await vectorStore.similaritySearch(message, 4);
+    const context = await vectorStore.similaritySearch(message, 4);
 
-  return results;
-};
+    // Query last 6 message for the context
+    const previousMessages = await ctx.runQuery(api.messages.getMessages, {
+      botId,
+      take: 6,
+    });
+
+    const messageId = await ctx.runMutation(api.messages.create, {
+      author: "assistant",
+      text: "...",
+      botId,
+    });
+
+    // Schedule an action that calls ChatGPT and updates the message.
+    await ctx.scheduler.runAfter(0, internal.openai.chat, {
+      data: JSON.stringify({
+        context,
+        messageId,
+        message,
+        messages: previousMessages,
+      }),
+    });
+  },
+});
 
 export const createVector = internalAction({
   args: { file: v.id("_storage"), id: v.id("bot") },

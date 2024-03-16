@@ -1,4 +1,6 @@
+import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
 import { ChangeEventHandler, ReactNode, createContext, useState } from "react";
 
 export type StreamResponse = {
@@ -23,30 +25,15 @@ interface ChatContextProviderProps {
 function ChatContextProvider({ botId, children }: ChatContextProviderProps) {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const { toast } = useToast();
 
-  // const { mutate: sendMessage } = useMutation({
-  //   mutationFn: async ({ message }: { message: string }) => {
-  //     const response = await fetch("/api/message", {
-  //       method: "POST",
-  //       body: JSON.stringify({ botId, message }),
-  //     });
+  const sendMessage = useMutation(api.messages.send);
 
-  //     if (!response.ok) {
-  //       throw new Error("Failed to send message");
-  //     }
-
-  //     return response.body;
-  //   },
-  // });
-
-  function addMessage() {
-    // sendMessage({ message });
+  async function addMessage() {
+    await sendMessage({ message, botId });
   }
 
-  function handleInputChange(data: any) {
-    // setMessage(data);
-    console.log(data);
+  function handleInputChange(data: string) {
+    setMessage(data);
   }
 
   return (

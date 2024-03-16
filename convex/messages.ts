@@ -2,8 +2,8 @@ import { paginationOptsValidator } from "convex/server";
 import { internalMutation, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-import { internal } from "./_generated/api";
-import { createVectorStore } from "./pinecone";
+import { api } from "./_generated/api";
+import { AuthorTypes } from "./schema";
 
 export const getMessagesOfBots = query({
   args: { botId: v.id("bot"), paginationOpts: paginationOptsValidator },
@@ -18,6 +18,42 @@ export const getMessagesOfBots = query({
   },
 });
 
+export const getMessages = query({
+  args: { botId: v.id("bot"), take: v.number() },
+  handler: async (ctx, args) => {
+    const messages = await ctx.db
+      .query("message")
+      .filter((q) => q.eq(q.field("bot"), args.botId))
+      .order("desc")
+      .take(args.take);
+
+    return messages;
+  },
+});
+
+export const create = mutation({
+  args: { botId: v.id("bot"), text: v.string(), author: AuthorTypes },
+  handler: async (ctx, args) => {
+    const messageId = await ctx.db.insert("message", {
+      author: args.author,
+      text: args.text,
+      bot: args.botId,
+    });
+
+    const bot = await ctx.db.get(args.botId);
+
+    const updateMessages = !bot?.messages
+      ? [messageId]
+      : [...bot.messages, messageId];
+
+    await ctx.db.patch(args.botId, {
+      messages: updateMessages,
+    });
+
+    return messageId;
+  },
+});
+
 export const send = mutation({
   args: { botId: v.id("bot"), message: v.string() },
   handler: async (ctx, args) => {
@@ -28,36 +64,15 @@ export const send = mutation({
     }
 
     // save user message to DB
-    await ctx.db.insert("message", {
+    await ctx.scheduler.runAfter(0, api.messages.create, {
       author: "user",
       text: args.message,
-      bot: bot._id,
+      botId: bot._id,
     });
 
-    const context = createVectorStore({
+    await ctx.scheduler.runAfter(0, api.pinecone.searchAndChat, {
       botId: bot._id,
       message: args.message,
-    });
-
-    // Query last 6 message for the context
-    const previousMessages = await ctx.db
-      .query("message")
-      .filter((q) => q.eq(q.field("bot"), bot._id))
-      .order("desc")
-      .take(6);
-
-    const messageId = await ctx.db.insert("message", {
-      author: "assistant",
-      text: "...",
-      bot: bot._id,
-    });
-
-    // Schedule an action that calls ChatGPT and updates the message.
-    await ctx.scheduler.runAfter(0, internal.openai.chat, {
-      context,
-      messageId,
-      message: args.message,
-      messages: previousMessages,
     });
   },
 });
