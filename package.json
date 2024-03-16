@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev:backend": "convex dev"
+    "dev:backend": "npx convex dev"
   },
   "dependencies": {
     "@clerk/clerk-react": "^4.30.7",
@@ -25,7 +25,7 @@
     "@nextui-org/switch": "2.0.25",
     "@nextui-org/system": "2.0.15",
     "@nextui-org/theme": "2.1.17",
-    "@pinecone-database/pinecone": "^2.1.0",
+    "@pinecone-database/pinecone": "^0.1.6",
     "@react-aria/ssr": "^3.8.0",
     "@react-aria/visually-hidden": "^3.8.6",
     "@types/node": "20.5.7",
@@ -39,10 +39,12 @@
     "eslint-config-next": "14.0.2",
     "framer-motion": "^10.16.4",
     "intl-messageformat": "^10.5.0",
+    "langchain": "^0.0.92",
     "lucide-react": "^0.356.0",
     "next": "14.0.2",
     "next-themes": "^0.2.1",
     "openai": "^4.29.0",
+    "pdf-parse": "^1.1.1",
     "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",

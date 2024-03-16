@@ -1,5 +1,8 @@
-import { mutation, query } from "./_generated/server";
+import { api, internal } from "./_generated/api";
+import { internalMutation, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { BotStatusType } from "./schema";
+import { Id } from "./_generated/dataModel";
 
 export const getUserBots = query({
   args: { userId: v.string() },
@@ -14,7 +17,7 @@ export const getUserBots = query({
 });
 
 export const getBotById = query({
-  args: { id: v.id("bot"), userId: v.string() },
+  args: { id: v.id("bot"), userId: v.optional(v.string()) },
   handler: async (ctx, args) => {
     const bot = await ctx.db
       .query("bot")
@@ -52,6 +55,12 @@ export const createBot = mutation({
       user: args.userId,
       messages: [],
     });
+
+    await ctx.scheduler.runAfter(0, internal.pinecone.createVector, {
+      file: args.file,
+      id: newBotId,
+    });
+
     return newBotId;
   },
 });
@@ -81,4 +90,14 @@ export const deleteBot = mutation({
 
 export const generateUploadUrl = mutation(async (ctx) => {
   return await ctx.storage.generateUploadUrl();
+});
+
+export const updateBotStatus = internalMutation({
+  args: {
+    botId: v.id("bot"),
+    status: BotStatusType,
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.patch(args.botId, { status: args.status });
+  },
 });

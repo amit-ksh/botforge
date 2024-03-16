@@ -17,10 +17,10 @@ function Messages({ botId }: MessagesProps) {
     { initialNumItems: 10 }
   );
 
-  const loadingMessages = {
+  const loadingMessages: any = {
     _creationTime: new Date().toISOString(),
     _id: "loading-messages",
-    messageBy: "BOT",
+    messageBy: "assistant",
     text: (
       <span className="flex h-full items-center justify-center">
         <Loader className="w-4 h-4 animate-spin" />

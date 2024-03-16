@@ -47,8 +47,6 @@ function UploadButton() {
   async function handleCreateBot(e: FormEvent) {
     e.preventDefault();
 
-    console.log("CREATE BOT");
-
     if (!userId) return redirect("/");
     if (!botName || !description || !file) return;
 
@@ -62,6 +60,9 @@ function UploadButton() {
       body: file,
     });
     const { storageId } = await result.json();
+    setLoading(false);
+    onClose();
+
     // Save the bot to the database
     const botId = await createBot({
       file: storageId,
@@ -70,12 +71,10 @@ function UploadButton() {
       userId,
     });
 
-    setLoading(false);
     if (!botId) {
       // create an error toast
     } else {
       // create a success toast
-      onClose();
     }
   }
 

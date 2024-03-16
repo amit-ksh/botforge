@@ -16,6 +16,9 @@ import type {
 } from "convex/server";
 import type * as bots from "../bots.js";
 import type * as messages from "../messages.js";
+import type * as openai from "../openai.js";
+import type * as pdf from "../pdf.js";
+import type * as pinecone from "../pinecone.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -28,6 +31,9 @@ import type * as messages from "../messages.js";
 declare const fullApi: ApiFromModules<{
   bots: typeof bots;
   messages: typeof messages;
+  openai: typeof openai;
+  pdf: typeof pdf;
+  pinecone: typeof pinecone;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
