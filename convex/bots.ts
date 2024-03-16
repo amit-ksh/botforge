@@ -19,14 +19,7 @@ export const getUserBots = query({
 export const getBotById = query({
   args: { id: v.id("bot"), userId: v.optional(v.string()) },
   handler: async (ctx, args) => {
-    const bot = await ctx.db
-      .query("bot")
-      .filter(
-        (q) =>
-          q.eq(q.field("_id"), args.id) && q.eq(q.field("user"), args.userId)
-      )
-      .order("desc")
-      .take(1);
+    const bot = await ctx.db.get(args.id);
     return bot;
   },
 });

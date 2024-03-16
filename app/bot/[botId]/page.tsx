@@ -19,19 +19,17 @@ function Page({ params }: PageProps) {
   const { botId } = params;
   const { userId } = useAuth();
 
-  const bots = useQuery(api.bots.getBotById, { id: botId, userId: userId! });
+  const bot = useQuery(api.bots.getBotById, { id: botId, userId: userId! });
   const fileUrl = useQuery(api.bots.getBotContentFile, {
-    fileId: bots && bots.length > 0 ? bots![0].content : undefined,
+    fileId: bot ? bot.content : undefined,
   });
 
-  if (!bots)
+  if (!bot)
     return (
       <div className="w-full h-[80vh] flex items-center justify-center">
         <Loader2Icon className="w-20 h-20 animate-spin text-orange-600" />
       </div>
     );
-
-  const bot = bots[0];
 
   if (!bot?._id) notFound();
 
