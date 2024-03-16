@@ -123,6 +123,7 @@ function UploadButton() {
               <Button
                 form={createBotFormID}
                 type="submit"
+                isDisabled={!botName || !description || !file}
                 isLoading={loading}
                 variant="solid"
                 className="w-full font-semibold tracking-wide bg-orange-600 uppercase"

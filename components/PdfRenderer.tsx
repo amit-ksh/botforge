@@ -2,7 +2,8 @@
 
 import {
   ChevronDown,
-  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   FileWarningIcon,
   Loader2,
   RotateCw,
@@ -94,7 +95,7 @@ function PdfRenderer({ url }: PdfRendererProps) {
             }}
             className="min-w-[auto]"
           >
-            <ChevronDown className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4" />
           </Button>
 
           <div className="h-full flex items-center gap-1.5">
@@ -104,7 +105,6 @@ function PdfRenderer({ url }: PdfRendererProps) {
               variant="faded"
               max={numPages}
               min={1}
-              defaultValue="1"
               className={`
                 w-12
                 ${errors.page && "focus-visible:ring-red-500"}
@@ -127,46 +127,47 @@ function PdfRenderer({ url }: PdfRendererProps) {
             disabled={!numPages || curPage >= numPages}
             onClick={() => {
               setCurPage((prevPage) =>
-                prevPage + 1 > numPages! ? prevPage + 1 : numPages!
+                prevPage + 1 < numPages! ? prevPage + 1 : numPages!
               );
               setValue("page", String(curPage + 1));
             }}
             className="min-w-[auto]"
           >
-            <ChevronUp className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
 
         {/* SCALE DROPDOWN */}
-        {/* <Dropdown className="space-x-2">
+        <Dropdown className="space-x-2">
           <DropdownTrigger>
             <Button aria-label="zoom" variant="ghost" className="gap-1.5">
               <Search className="h-4 w-4" />
               {scale * 100}% <ChevronDown className="h-3 w-3 opacity-50" />
             </Button>
           </DropdownTrigger>
-          <DropdownMenu>
-            <DropdownSection>
-              <DropdownItem key="1" onClick={() => setScale(1)}>
-                100%
-              </DropdownItem>
-              <DropdownItem key="1.5" onClick={() => setScale(1.5)}>
-                150%
-              </DropdownItem>
-              <DropdownItem key="2" onClick={() => setScale(2)}>
-                200%
-              </DropdownItem>
-              <DropdownItem key="2.5" onClick={() => setScale(2.5)}>
-                250%
-              </DropdownItem>
+          <DropdownMenu
+            defaultSelectedKeys={`${scale}`}
+            aria-label="select scale value"
+            selectionMode="single"
+            selectedKeys={`${scale}`}
+            // @ts-ignore
+            onSelectionChange={(d) => setScale(+d?.currentKey!)}
+          >
+            <DropdownSection title="Scale">
+              <DropdownItem key={1}>100%</DropdownItem>
+              <DropdownItem key={1.5}>150%</DropdownItem>
+              <DropdownItem key={2}>200%</DropdownItem>
+              <DropdownItem key={2.5}>250%</DropdownItem>
             </DropdownSection>
           </DropdownMenu>
-        </Dropdown> */}
+        </Dropdown>
 
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
-            onClick={() => setRotation((prev) => prev + 90)}
+            onClick={() =>
+              setRotation((prev) => (prev !== 270 ? prev + 90 : 0))
+            }
             aria-label="rotate 90 degree"
             className="min-w-[auto]"
           >
