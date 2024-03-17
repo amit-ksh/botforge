@@ -40,7 +40,7 @@ function Page({ params }: PageProps) {
     <div className="max-w-6xl mx-auto w-full flex flex-col mt-4 px-6">
       <Tabs aria-label="Options" fullWidth={true}>
         <Tab key="chat" title="Chat">
-          <div className="mx-auto w-full h-[91vh] max-w-7xl grow lg:flex xl:px-2">
+          <div className="mx-auto w-full h-[90vh] max-w-7xl grow lg:flex xl:px-2">
             {/* left side */}
             <div className="flex-1 xl:flex">
               <div className="px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
@@ -49,7 +49,7 @@ function Page({ params }: PageProps) {
             </div>
 
             {/* right side */}
-            <div className="shrink-0 min-h-[50vh] flex-[0.75] border-t border-zinc-300 dark:border-zinc-800 lg:w-96 lg:border-l lg:border-t-0">
+            <div className="relative shrink-0 min-h-[50vh] flex-[0.75] border-t border-zinc-300 dark:border-zinc-800 lg:w-96 lg:border-l lg:border-t-0">
               <ChatWrapper botStatus={bot.status} botId={bot._id} />
             </div>
           </div>

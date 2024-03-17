@@ -91,7 +91,7 @@ function Messages({ botId }: MessagesProps) {
 
       {/* FIRST MESSAGE PROMPT */}
       {messages.results.length <= 0 && messages.status === "Exhausted" ? (
-        <div className="flex-1 flex flex-col items-center justify-center gap-2">
+        <div className="mt-[60%] flex-1 flex flex-col items-center justify-center gap-2">
           <MessageSquare className="h-8 w-8 text-orange-600" />
           <h3 className="font-semibold text-xl">You&apos;re all set!</h3>
           <p className="text-sm text-default-foreground font-thin">
