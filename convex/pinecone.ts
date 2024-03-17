@@ -5,7 +5,7 @@ import { PineconeClient } from "@pinecone-database/pinecone";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
 import { api, internal } from "./_generated/api";
-import { action, internalAction, query } from "./_generated/server";
+import { action, internalAction } from "./_generated/server";
 
 const getPineconeIndex = async () => {
   const client = new PineconeClient();

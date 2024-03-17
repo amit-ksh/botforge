@@ -10,16 +10,16 @@ import {
   Divider,
   Link,
   Image,
-  Button,
   Chip,
   Skeleton,
 } from "@nextui-org/react";
+import { useAuth } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+
 import { title } from "./primitives";
 import UploadButton from "./UploadButton";
-import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useAuth } from "@clerk/nextjs";
-import { Id } from "@/convex/_generated/dataModel";
+import DeleteButton from "./DeleteButton";
 
 enum BotStatusColorMap {
   PROCESSING = "primary",
@@ -31,16 +31,6 @@ function Dashboard() {
   const { userId } = useAuth();
 
   const bots = useQuery(api.bots.getUserBots, { userId: userId! });
-  const deleteBot = useMutation(api.bots.deleteBot);
-
-  async function handleBotDelete(id: Id<"bot">) {
-    const resp = await deleteBot({ userId: userId!, id });
-    if (resp.code == 200) {
-      // success toast
-    } else {
-      // failure toast
-    }
-  }
 
   return (
     <main className="mx-auto max-w-7xl px-6 md:px-10">
@@ -108,14 +98,16 @@ function Dashboard() {
                         </span>
                       </p>
 
-                      <Button
-                        color="danger"
-                        variant="ghost"
-                        className="w-4 h-7"
-                        onClick={() => handleBotDelete(bot._id)}
-                      >
-                        <TrashIcon className="w-4 h-4" />
-                      </Button>
+                      <div className="">
+                        <DeleteButton
+                          variant="flat"
+                          className="w-4 h-7"
+                          botId={bot._id}
+                          userId={userId!}
+                        >
+                          <TrashIcon className="w-4 h-4" />
+                        </DeleteButton>
+                      </div>
                     </div>
                   </CardBody>
                 </Card>

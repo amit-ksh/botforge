@@ -67,7 +67,7 @@ export const deleteBot = mutation({
   handler: async (ctx, args) => {
     const bot = await ctx.db.get(args.id);
 
-    if (!bot || bot.user === args.userId) {
+    if (!bot || bot.user !== args.userId) {
       return {
         code: 400,
       };

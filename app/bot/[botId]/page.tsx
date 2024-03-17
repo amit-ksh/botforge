@@ -3,14 +3,14 @@ import { notFound } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { Loader2Icon } from "lucide-react";
-import { Tabs, Tab, Card, CardBody, Snippet, Button } from "@nextui-org/react";
+import { Tabs, Tab, Snippet } from "@nextui-org/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
 import ChatWrapper from "@/components/ChatWrapper";
 import PdfRenderer from "@/components/PdfRenderer";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import DeleteButton from "@/components/DeleteButton";
 
 interface PageProps {
   params: {
@@ -78,7 +78,7 @@ function Page({ params }: PageProps) {
               <li className="flex flex-col gap-2">
                 <h3 className="text-xl">Created Date</h3>
                 <Snippet symbol="" hideCopyButton className="py-2">
-                  {format(bot._creationTime, "d MMMM Y")}
+                  {format(bot._creationTime, "d MMMM y")}
                 </Snippet>
               </li>
               <li className="flex flex-col gap-2">
@@ -91,13 +91,14 @@ function Page({ params }: PageProps) {
           </div>
 
           <div className="w-full flex justify-end">
-            <Button
-              color="danger"
-              variant="bordered"
+            <DeleteButton
+              variant="ghost"
               className="my-4 text-lg font-semibold"
+              botId={bot._id}
+              userId={userId!}
             >
               Delete Bot
-            </Button>
+            </DeleteButton>
           </div>
         </Tab>
       </Tabs>
