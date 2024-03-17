@@ -5,7 +5,7 @@ import { v } from "convex/values";
 import { api } from "./_generated/api";
 import { AuthorTypes } from "./schema";
 
-export const getMessagesOfBots = query({
+export const getPaginatedMessages = query({
   args: { botId: v.id("bot"), paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
     const messages = await ctx.db

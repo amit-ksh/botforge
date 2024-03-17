@@ -1,20 +1,23 @@
 import { CircleCheckBigIcon, Loader, MessageSquare } from "lucide-react";
-import React from "react";
+import { useEffect } from "react";
 import Message from "./Message";
 import { usePaginatedQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { Skeleton } from "@nextui-org/react";
+import { useIntersectionObserver } from "usehooks-ts";
 
 interface MessagesProps {
   botId: Id<"bot">;
 }
 
+const MESSAGE_LIMIT = 10;
+
 function Messages({ botId }: MessagesProps) {
   const messages = usePaginatedQuery(
-    api.messages.getMessagesOfBots,
+    api.messages.getPaginatedMessages,
     { botId },
-    { initialNumItems: 10 }
+    { initialNumItems: MESSAGE_LIMIT }
   );
 
   const loadingMessages = {
@@ -33,7 +36,15 @@ function Messages({ botId }: MessagesProps) {
     ...(messages.results ?? []),
   ];
 
-  console.log(combinedMessages);
+  const { isIntersecting, ref } = useIntersectionObserver({
+    threshold: 1,
+  });
+
+  useEffect(() => {
+    if (isIntersecting) {
+      messages.loadMore(MESSAGE_LIMIT);
+    }
+  }, [isIntersecting, messages]);
 
   return (
     <div
@@ -50,6 +61,7 @@ function Messages({ botId }: MessagesProps) {
             if (idx === messages.results.length - 1) {
               return (
                 <Message
+                  ref={ref}
                   key={msg._id}
                   message={msg}
                   isNextMessageSamePerson={isNextMessageSamePerson}
@@ -59,6 +71,7 @@ function Messages({ botId }: MessagesProps) {
 
             return (
               <Message
+                ref={ref}
                 key={msg._id}
                 message={msg}
                 isNextMessageSamePerson={isNextMessageSamePerson}

@@ -6,15 +6,17 @@ import { Doc } from "@/convex/_generated/dataModel";
 import { AppLogo } from "./icons";
 
 interface MessageProps {
+  ref: (node?: Element | null | undefined) => void;
   message: Doc<"message">;
   isNextMessageSamePerson: boolean;
 }
 
-function Message({ message, isNextMessageSamePerson }: MessageProps) {
+function Message({ message, isNextMessageSamePerson, ref }: MessageProps) {
   const isUserMessage = message.author === "user";
 
   return (
     <div
+      ref={ref}
       className={cn(`flex items-end`, {
         "justify-end": isUserMessage,
       })}
