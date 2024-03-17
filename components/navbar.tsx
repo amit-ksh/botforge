@@ -68,10 +68,10 @@ export const Navbar = () => {
         ) : (
           <>
             <NavbarItem className="hidden sm:flex font-semibold">
-              <SignInButton mode="redirect" />
+              <SignInButton mode="redirect" redirectUrl="/dashboard" />
             </NavbarItem>
             <NavbarItem className="hidden sm:flex font-semibold">
-              <SignUpButton mode="redirect" />
+              <SignUpButton mode="redirect" redirectUrl="/dashboard" />
             </NavbarItem>
           </>
         )}

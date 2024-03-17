@@ -113,7 +113,7 @@ export const updateBotStatus = internalMutation({
 
 function generateApiKey() {
   const values = new Uint8Array(32);
-  window.crypto.getRandomValues(values);
+  crypto.getRandomValues(values);
   const apiKey = Array.from(values)
     .map((value) => value.toString(16).padStart(2, "0"))
     .join("");
