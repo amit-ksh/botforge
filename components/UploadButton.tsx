@@ -174,18 +174,19 @@ const UploadDropzone = ({ onFileUpload }: UploadDropzoneProps) => {
       onDrop={async (acceptedFiles) => {
         setIsUploading(true);
 
+        setUploadProgress(0);
         const progressInterval = startSimulatedProgress();
 
         onFileUpload(acceptedFiles[0]);
 
-        clearInterval(progressInterval);
         setUploadProgress(100);
+        clearInterval(progressInterval);
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
         <div
-          {...getRootProps()}
           className="border h-64 w-full border-dashed border-gray-300 rounded-lg"
+          {...getRootProps({ onClick: (evt) => evt.stopPropagation() })}
         >
           <div className="flex item-center justify-center h-full w-full">
             <label
@@ -198,7 +199,6 @@ const UploadDropzone = ({ onFileUpload }: UploadDropzoneProps) => {
                   <span className="font-semibold">Click to upload</span> or drag
                   and drop
                 </p>
-                <p className="text-xs text-zinc-500">PDF (up to 4MB)</p>
               </div>
 
               {acceptedFiles && acceptedFiles[0] ? (
@@ -216,6 +216,7 @@ const UploadDropzone = ({ onFileUpload }: UploadDropzoneProps) => {
                 <div className="w-full mt-4 max-w-xs mx-auto">
                   <Progress
                     value={uploadProgress}
+                    color={uploadProgress !== 100 ? "primary" : "success"}
                     className="h-1 w-full"
                     aria-label="Uploading..."
                   />
