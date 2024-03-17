@@ -34,7 +34,7 @@ function Page({ params }: PageProps) {
   if (!bot?._id) notFound();
 
   return (
-    <div className="flex-1 justify-between flex flex-col h-[calc(100vh - 3.5rem)] lg:overflow-y-hidden">
+    <div className="flex-1 justify-between flex flex-col h-[calc(100vh - 3.5rem)]">
       <div className="mx-auto w-full h-[91vh] max-w-7xl grow lg:flex xl:px-2">
         {/* left side */}
         <div className="flex-1 xl:flex">

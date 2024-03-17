@@ -55,11 +55,10 @@ function ChatWrapper({ botId, botStatus }: ChatWrapperProps) {
   // BOT 'READY' STATE
   return (
     <ChatContextProvider botId={botId}>
-      <div className="relative min-h-full divide-y divide-zinc-300 dark:divide-zinc-800 flex-col justify-between gap-2">
-        <div className="flex-1 justify-between flex flex-col mb-28">
+      <div className="relative max-h-screen divide-y divide-zinc-300 dark:divide-zinc-800 flex-col justify-between gap-2">
+        <div className="flex-1 justify-between flex flex-col">
           <Messages botId={botId} />
         </div>
-
         <ChatInput />
       </div>
     </ChatContextProvider>

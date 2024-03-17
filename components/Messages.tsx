@@ -3,7 +3,7 @@ import React from "react";
 import Message from "./Message";
 import { usePaginatedQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import { Skeleton } from "@nextui-org/react";
 
 interface MessagesProps {
@@ -17,7 +17,7 @@ function Messages({ botId }: MessagesProps) {
     { initialNumItems: 10 }
   );
 
-  const loadingMessages: any = {
+  const loadingMessages = {
     _creationTime: new Date().toISOString(),
     _id: "loading-messages",
     messageBy: "assistant",
@@ -26,23 +26,26 @@ function Messages({ botId }: MessagesProps) {
         <Loader className="w-4 h-4 animate-spin" />
       </span>
     ),
-  };
+  } as unknown as Doc<"message">;
 
   const combinedMessages = [
     ...(messages.isLoading ? [loadingMessages] : []),
     ...(messages.results ?? []),
   ];
 
+  console.log(combinedMessages);
+
   return (
-    <div className="flex max-h-[calc(100vh - 3.5rem -7rem)] border-zinc-700 flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue scrollbar-w-2 scrolling-touch">
+    <div
+      style={{ maxHeight: "calc(100vh - 1rem)" }}
+      className="flex max-h-[calc(100vh - 1rem)] h-full border-zinc-700 flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue scrollbar-w-2 scrolling-touch"
+    >
       {/* MESSAGES */}
-      {messages.status !== "Exhausted" &&
-      combinedMessages &&
-      combinedMessages.length > 0
+      {combinedMessages && combinedMessages.length > 0
         ? combinedMessages.map((msg, idx) => {
             const isNextMessageSamePerson =
-              combinedMessages[idx - 1]?.messageBy ===
-              combinedMessages[idx]?.messageBy;
+              combinedMessages[idx - 1]?.author ===
+              combinedMessages[idx]?.author;
 
             if (idx === messages.results.length - 1) {
               return (

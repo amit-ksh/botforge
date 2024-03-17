@@ -180,8 +180,8 @@ function PdfRenderer({ url }: PdfRendererProps) {
 
       {/* PDF VIEWER */}
       <div className="flex-1 w-full overflow-y-hidden">
-        <SimpleBar autoHide={false} className="max-h-[calc(100vh-9.4rem)]">
-          <div ref={ref} className="max-h-[calc(100vh-9.4rem)]">
+        <SimpleBar autoHide={false} className="max-h-[80vh] lg:max-h-screen">
+          <div ref={ref} className="max-h-[80vh] lg:max-h-screen">
             <Document
               loading={
                 <div className="flex justify-center">
