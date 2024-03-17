@@ -17,6 +17,7 @@ export default defineSchema({
     status: BotStatusType,
     user: v.string(),
     messages: v.array(v.id("message")),
+    apiKey: v.string(),
   }),
   message: defineTable({
     text: v.string(),

@@ -1,5 +1,5 @@
 import { api, internal } from "./_generated/api";
-import { internalMutation, mutation, query } from "./_generated/server";
+import { action, internalMutation, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { BotStatusType } from "./schema";
 import { Id } from "./_generated/dataModel";
@@ -47,6 +47,7 @@ export const createBot = mutation({
       status: "PROCESSING",
       user: args.userId,
       messages: [],
+      apiKey: generateApiKey(),
     });
 
     await ctx.scheduler.runAfter(0, internal.pinecone.createVector, {
@@ -94,3 +95,13 @@ export const updateBotStatus = internalMutation({
     return await ctx.db.patch(args.botId, { status: args.status });
   },
 });
+
+function generateApiKey() {
+  const values = new Uint8Array(32);
+  window.crypto.getRandomValues(values);
+  const apiKey = Array.from(values)
+    .map((value) => value.toString(16).padStart(2, "0"))
+    .join("");
+
+  return apiKey;
+}

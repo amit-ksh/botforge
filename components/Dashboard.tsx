@@ -123,11 +123,11 @@ function Dashboard() {
             ))}
         </ul>
       ) : (
-        <>
-          <Skeleton className="w-[360px] h-[120px] my-2" />
-          <Skeleton className="w-[360px] h-[120px] my-2" />
-          <Skeleton className="w-[360px] h-[120px] my-2" />
-        </>
+        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <Skeleton className="w-[360px] h-[120px] my-2 right-unit-lg" />
+          <Skeleton className="w-[360px] h-[120px] my-2 right-unit-lg" />
+          <Skeleton className="w-[360px] h-[120px] my-2 right-unit-lg" />
+        </div>
       )}
 
       {bots?.length === 0 ? (

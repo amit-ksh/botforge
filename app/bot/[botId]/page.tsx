@@ -3,11 +3,14 @@ import { notFound } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { Loader2Icon } from "lucide-react";
+import { Tabs, Tab, Card, CardBody, Snippet, Button } from "@nextui-org/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
 import ChatWrapper from "@/components/ChatWrapper";
 import PdfRenderer from "@/components/PdfRenderer";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface PageProps {
   params: {
@@ -34,20 +37,70 @@ function Page({ params }: PageProps) {
   if (!bot?._id) notFound();
 
   return (
-    <div className="flex-1 justify-between flex flex-col h-[calc(100vh - 3.5rem)]">
-      <div className="mx-auto w-full h-[91vh] max-w-7xl grow lg:flex xl:px-2">
-        {/* left side */}
-        <div className="flex-1 xl:flex">
-          <div className="px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
-            <PdfRenderer url={fileUrl} />
-          </div>
-        </div>
+    <div className="max-w-6xl mx-auto w-full flex flex-col mt-4 px-6">
+      <Tabs aria-label="Options" fullWidth={true}>
+        <Tab key="chat" title="Chat">
+          <div className="mx-auto w-full h-[91vh] max-w-7xl grow lg:flex xl:px-2">
+            {/* left side */}
+            <div className="flex-1 xl:flex">
+              <div className="px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
+                <PdfRenderer url={fileUrl} />
+              </div>
+            </div>
 
-        {/* right side */}
-        <div className="shrink-0 min-h-[50vh] flex-[0.75] border-t border-zinc-300 dark:border-zinc-800 lg:w-96 lg:border-l lg:border-t-0">
-          <ChatWrapper botStatus={bot.status} botId={bot._id} />
-        </div>
-      </div>
+            {/* right side */}
+            <div className="shrink-0 min-h-[50vh] flex-[0.75] border-t border-zinc-300 dark:border-zinc-800 lg:w-96 lg:border-l lg:border-t-0">
+              <ChatWrapper botStatus={bot.status} botId={bot._id} />
+            </div>
+          </div>
+        </Tab>
+        <Tab key="setting" title="Settings">
+          <h2 className="text-3xl font-bold text-center my-8">Settings</h2>
+
+          <div className="max-w-7xl font-semibold">
+            <ul className="flex flex-col gap-6">
+              <li className="flex flex-col gap-2">
+                <h3 className="text-xl">API Key</h3>
+                <Snippet symbol="">{bot.apiKey}</Snippet>
+              </li>
+              <li className="flex flex-col gap-2">
+                <h3 className="text-xl">Bot Name</h3>
+                <Snippet symbol="" hideCopyButton className="py-2">
+                  {bot.name}
+                </Snippet>
+              </li>
+              <li className="flex flex-col gap-2">
+                <h3 className="text-xl">Bot Description</h3>
+                <Snippet symbol="" hideCopyButton className="py-2">
+                  {bot.description}
+                </Snippet>
+              </li>
+              <li className="flex flex-col gap-2">
+                <h3 className="text-xl">Created Date</h3>
+                <Snippet symbol="" hideCopyButton className="py-2">
+                  {format(bot._creationTime, "d MMMM Y")}
+                </Snippet>
+              </li>
+              <li className="flex flex-col gap-2">
+                <h3 className="text-xl">Bot Status</h3>
+                <Snippet symbol="" hideCopyButton className="py-2">
+                  {bot.status}
+                </Snippet>
+              </li>
+            </ul>
+          </div>
+
+          <div className="w-full flex justify-end">
+            <Button
+              color="danger"
+              variant="bordered"
+              className="my-4 text-lg font-semibold"
+            >
+              Delete Bot
+            </Button>
+          </div>
+        </Tab>
+      </Tabs>
     </div>
   );
 }
