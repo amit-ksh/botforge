@@ -114,17 +114,17 @@ function Dashboard() {
               </li>
             ))}
         </ul>
-      ) : (
+      ) : !bots ? (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <Skeleton className="w-[360px] h-[120px] my-2 right-unit-lg" />
-          <Skeleton className="w-[360px] h-[120px] my-2 right-unit-lg" />
-          <Skeleton className="w-[360px] h-[120px] my-2 right-unit-lg" />
+          <Skeleton className="w-[360px] h-[120px] my-2 rounded-lg" />
+          <Skeleton className="w-[360px] h-[120px] my-2 rounded-lg" />
+          <Skeleton className="w-[360px] h-[120px] my-2 rounded-lg" />
         </div>
-      )}
+      ) : null}
 
       {bots?.length === 0 ? (
         <div className="mt-16 flex flex-col items-center gap-2">
-          <GhostIcon className="h-8 w-8 text-zinc-800" />
+          <GhostIcon className="h-8 w-8 text-orange-700" />
           <h3 className="font-semibold text-xl">Pretty empty around here.</h3>
           <p>Let&apos;s create your first bot.</p>
         </div>
