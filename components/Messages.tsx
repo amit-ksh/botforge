@@ -1,11 +1,12 @@
-import { CircleCheckBigIcon, Loader, MessageSquare } from "lucide-react";
 import { useEffect } from "react";
-import Message from "./Message";
+import { Skeleton } from "@nextui-org/react";
+import { CircleCheckBigIcon, Loader, MessageSquare } from "lucide-react";
 import { usePaginatedQuery } from "convex/react";
+import { useIntersectionObserver } from "usehooks-ts";
+
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
-import { Skeleton } from "@nextui-org/react";
-import { useIntersectionObserver } from "usehooks-ts";
+import Message from "./Message";
 
 interface MessagesProps {
   botId: Id<"bot">;
@@ -21,7 +22,7 @@ function Messages({ botId }: MessagesProps) {
   );
 
   const loadingMessages = {
-    _creationTime: new Date().toISOString(),
+    _creationTime: Date.now(),
     _id: "loading-messages",
     messageBy: "assistant",
     text: (

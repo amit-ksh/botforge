@@ -1,7 +1,6 @@
 import { AppLogo } from "@/components/icons";
 import { title, subtitle } from "@/components/primitives";
-import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
+import { Button, Link, Skeleton } from "@nextui-org/react";
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
           </span>
           <span className={title({ color: "yellow" })}>BotForge</span>
         </h1>
-
         <div className="my-6">
           <h2 className={title()}>
             Craft content{" "}

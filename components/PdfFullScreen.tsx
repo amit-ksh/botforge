@@ -3,8 +3,8 @@ import { Expand, Loader2 } from "lucide-react";
 import SimpleBar from "simplebar-react";
 import { Document, Page } from "react-pdf";
 import { useResizeDetector } from "react-resize-detector";
-import { Button } from "@nextui-org/button";
 import {
+  Button,
   Modal,
   ModalBody,
   ModalContent,

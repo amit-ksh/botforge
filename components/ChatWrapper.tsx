@@ -4,8 +4,7 @@ import ChatInput from "./ChatInput";
 import Messages from "./Messages";
 import { ChevronLeft, Loader2, XCircle } from "lucide-react";
 import ChatContextProvider from "./ChatContext";
-import { Link } from "@nextui-org/link";
-import { Button } from "@nextui-org/button";
+import { Link, Button } from "@nextui-org/react";
 import { Id } from "@/convex/_generated/dataModel";
 
 interface ChatWrapperProps {

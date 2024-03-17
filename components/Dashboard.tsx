@@ -1,7 +1,6 @@
 "use client";
 
 import { GhostIcon, LinkIcon, PlusIcon, TrashIcon } from "lucide-react";
-import Skeleton from "react-loading-skeleton";
 import { format } from "date-fns";
 
 import {
@@ -13,6 +12,7 @@ import {
   Image,
   Button,
   Chip,
+  Skeleton,
 } from "@nextui-org/react";
 import { title } from "./primitives";
 import UploadButton from "./UploadButton";
@@ -122,15 +122,21 @@ function Dashboard() {
               </li>
             ))}
         </ul>
-      ) : true ? (
-        <Skeleton height={100} className="my-2" count={3} />
       ) : (
+        <>
+          <Skeleton className="w-[360px] h-[120px] my-2" />
+          <Skeleton className="w-[360px] h-[120px] my-2" />
+          <Skeleton className="w-[360px] h-[120px] my-2" />
+        </>
+      )}
+
+      {bots?.length === 0 ? (
         <div className="mt-16 flex flex-col items-center gap-2">
           <GhostIcon className="h-8 w-8 text-zinc-800" />
           <h3 className="font-semibold text-xl">Pretty empty around here.</h3>
-          <p>Let&apos;s upload your first PDF.</p>
+          <p>Let&apos;s create your first bot.</p>
         </div>
-      )}
+      ) : null}
     </main>
   );
 }

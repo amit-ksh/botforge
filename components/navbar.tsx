@@ -7,9 +7,8 @@ import {
   NavbarMenuToggle,
   NavbarBrand,
   NavbarItem,
-} from "@nextui-org/navbar";
-
-import { link as linkStyles } from "@nextui-org/theme";
+  link as linkStyles,
+} from "@nextui-org/react";
 
 import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
