@@ -34,8 +34,8 @@ function Dashboard() {
 
   return (
     <main className="mx-auto max-w-7xl px-6 md:px-10">
-      <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
-        <h1 className={title({ size: "sm" })}>My Bots</h1>
+      <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-zinc-700 dark:border-zinc-300  pb-5 sm:flex-row sm:items-center sm:gap-0">
+        <h1 className={title({ size: "sm" })}>Bots</h1>
         <UploadButton />
       </div>
 
@@ -124,7 +124,7 @@ function Dashboard() {
 
       {bots?.length === 0 ? (
         <div className="mt-16 flex flex-col items-center gap-2">
-          <GhostIcon className="h-8 w-8 text-orange-700" />
+          <GhostIcon className="h-8 w-8 text-orange-600" />
           <h3 className="font-semibold text-xl">Pretty empty around here.</h3>
           <p>Let&apos;s create your first bot.</p>
         </div>
