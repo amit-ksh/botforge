@@ -24,6 +24,22 @@ export const getBotById = query({
   },
 });
 
+export const getBotByApiKey = query({
+  args: { apiKey: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    const bots = await ctx.db
+      .query("bot")
+      .filter((q) => q.eq(q.field("apiKey"), args.apiKey))
+      .take(1);
+
+    if (!bots || bots.length <= 0) {
+      return { code: 400, message: "Not Found" };
+    }
+
+    return bots[0];
+  },
+});
+
 export const getBotContentFile = query({
   args: { fileId: v.optional(v.id("_storage")) },
   handler: async (ctx, args) => {

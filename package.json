@@ -19,6 +19,7 @@
     "@pinecone-database/pinecone": "^0.1.6",
     "@react-aria/ssr": "^3.8.0",
     "@react-aria/visually-hidden": "^3.8.6",
+    "ai": "^3.0.12",
     "autoprefixer": "10.4.16",
     "clsx": "^2.0.0",
     "convex": "^1.10.0",
