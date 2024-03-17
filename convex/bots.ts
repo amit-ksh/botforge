@@ -1,8 +1,7 @@
-import { api, internal } from "./_generated/api";
-import { action, internalMutation, mutation, query } from "./_generated/server";
+import { internal } from "./_generated/api";
+import { internalMutation, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { BotStatusType } from "./schema";
-import { Id } from "./_generated/dataModel";
 
 export const getUserBots = query({
   args: { userId: v.string() },
@@ -25,7 +24,7 @@ export const getBotById = query({
 });
 
 export const getBotByApiKey = query({
-  args: { apiKey: v.optional(v.string()) },
+  args: { apiKey: v.string() },
   handler: async (ctx, args) => {
     const bots = await ctx.db
       .query("bot")

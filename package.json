@@ -1,5 +1,5 @@
 {
-  "name": "next-app-template",
+  "name": "botforge",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -37,7 +37,6 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.0",
-    "react-loading-skeleton": "^3.4.0",
     "react-markdown": "^9.0.1",
     "react-pdf": "^7.7.1",
     "react-resize-detector": "^10.0.1",

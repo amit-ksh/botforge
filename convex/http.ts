@@ -28,7 +28,7 @@ http.route({
     }
 
     const bot = (await ctx.runQuery(api.bots.getBotByApiKey, {
-      apiKey: apiKey || undefined,
+      apiKey,
     })) as Doc<"bot">;
 
     const pineconeIndex = await getPineconeIndex();
@@ -46,8 +46,6 @@ http.route({
     });
 
     const context = await vectorStore.similaritySearch(message, 4);
-
-    console.log(context);
 
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
